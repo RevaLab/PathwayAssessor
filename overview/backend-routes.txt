@@ -1,0 +1,6 @@
+POST /analyze
+    * user uploads:
+        - expression table
+        - database
+        - e-mail address
+    * user receives e-mail with finished analysis

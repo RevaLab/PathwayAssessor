@@ -1,0 +1,2 @@
+Pathway database
+    db: pathway: genes

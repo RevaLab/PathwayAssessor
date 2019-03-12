@@ -1,0 +1,4 @@
+1. User can upload expression table file
+2. User can select pathway database
+3. USer can enter e-mail address
+4. User receives e-mail with completed results
