@@ -18,8 +18,10 @@ def upload_file():
 def upload_file_2():
     if request.method == 'POST':
         f = request.files['file']
+        email = request.form['email']
         f.save(secure_filename(f.filename))
-        return 'file uploaded successfully'
+        file_name = secure_filename(f.filename)
+        return 'file uploaded successfully: {} from {}'.format(file_name, email)
 
 
 if __name__ == '__main__':
