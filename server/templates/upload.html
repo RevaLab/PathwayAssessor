@@ -1,5 +1,12 @@
 <html>
    <body>
+   <div class="instructions">
+       Directions:
+        Upload a gene expression data file in tab-delimited format.
+        An example gene expression data file is available here.
+        The file should contain a matrix with genes in rows and samples in columns.
+        Rows should be labeled with gene symbols.
+   </div>
       <form action = "http://localhost:5000/uploader" method = "POST"
          enctype = "multipart/form-data">
          <input type = "file" name = "file" />
