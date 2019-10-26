@@ -9,24 +9,43 @@
             Rows should be labeled with gene symbols.
         </div>
         <div class="submitForm">
-            <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-            <input type="email" id="email" v-model="email"/>
-            <select v-model="db">
-                <option value="kegg">KEGG</option>
-                <option value="reactome">Reactome</option>
-                <option value="hmdb_smpdb">HMDB/SMPDB</option>
-                <option value="hallmark">Hallmark</option>
-            </select>
-            <select v-model="mode">
-                <option value="geometric">geometric</option>
-                <option value="harmonic">harmonic</option>
-                <option value="min_p_val">min_p_val</option>
-            </select>
-            <select v-model="sortBy">
-                <option value="asc">ascending</option>
-                <option value="desc">descending</option>
-            </select>
-            <button v-on:click="submitFile()">Submit</button>
+            <div class="fieldset">
+                <label for="file">Expression table</label>
+                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+            </div>
+            <div class="fieldset">
+                <label for="email">Email</label>
+                <input type="email" id="email" v-model="email"/>
+            </div>
+            <div class="fieldset">
+                <label for="db">Pathway Database</label>
+                <select id="db" v-model="db">
+                    <option value="kegg">KEGG</option>
+                    <option value="reactome">Reactome</option>
+                    <option value="hmdb_smpdb">HMDB/SMPDB</option>
+                    <option value="hallmark">Hallmark</option>
+                </select>
+            </div>
+            <div class="fieldset">
+                <label for="mode">
+                    Mode
+                </label>
+                <select id="mode" v-model="mode">
+                    <option value="geometric">geometric</option>
+                    <option value="harmonic">harmonic</option>
+                    <option value="min_p_val">min_p_val</option>
+                </select>
+            </div>
+            <div class="fieldset">
+                <label for="direction">Direction</label>
+                <select id="direction" v-model="sortBy">
+                    <option value="asc">ascending</option>
+                    <option value="desc">descending</option>
+                </select>
+            </div>
+            <div class="fieldset">
+                <button v-on:click="submitFile()">Submit</button>
+            </div>
         </div>
     </div>
     <div v-if="sent">
@@ -94,10 +113,28 @@ export default {
 </script>
 
 <style scoped>
+    .submitForm {
+        padding: 1em;
+        background-color: #ffffff;
+    }
+
+    .fieldset {
+        /*background: white;*/
+        font-weight: bold;
+    }
+
+    .fieldset label, button {
+        margin: .2em .5em;
+    }
+
+    .fieldset label {
+        font-size: .9em;
+    }
+
     .input {
         background-color: #E0E0E2;
         padding: 20px 60px;
-        font-weight: bold;
+        /*font-weight: bold;*/
         margin: 10px auto;
     }
 
