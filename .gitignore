@@ -2,3 +2,6 @@
 .idea/
 venv/
 test_pw_scores.txt
+server/tmp/
+server/__pycache__/
+ucec.normal.txt
