@@ -4,7 +4,7 @@ import os
 import pickle
 from random import randint
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from flask_mail import Mail, Message
 
@@ -12,7 +12,9 @@ import pandas as pd
 import pathway_assessor as pa
 
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder="../client/dist/assets",
+            template_folder="../client/dist")
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -36,7 +38,7 @@ def export_csv(df):
 
 @app.route('/')
 def landing_page():
-    return jsonify({'hello': 'landing_page'})
+    return render_template('index.html')
 #
 #
 # @app.route('/upload')
