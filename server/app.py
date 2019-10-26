@@ -51,6 +51,9 @@ def upload():
         f = request.files['file']
         email = request.form['email']
         db = request.form['db']
+        ascending = request.form['sortBy'] == 'asc'
+        # rank_method = request.form['sortBy']
+        mode = request.form['mode']
 
         expression_table = pd.read_csv(f, sep='\t', header=0, index_col=0)
 
@@ -62,8 +65,11 @@ def upload():
             'expression_table': expression_table,
             'email': email,
             'db': db,
+            'ascending': ascending,
+            # 'rank_method': rank_method,
+            'mode': mode,
         }
-
+        print(instance)
         pickle.dump(instance, open('./tmp/to_send/{}.pkl'.format(file_id), 'wb'))
 
         return jsonify({'file_id': file_id})
@@ -78,6 +84,9 @@ def process(file_id):
     expression_table = data['expression_table']
     email = data['email']
     db = data['db']
+    ascending = data['ascending']
+    # rank_method = data['rank_method']
+    mode = data['mode']
 
     msg = Message(
         'IPAS results',
@@ -85,13 +94,27 @@ def process(file_id):
         recipients=[email]
     )
 
-    geometric = pa.geometric(expression_table=expression_table, db=db)
+    if mode == 'harmonic':
+        res = pa.harmonic(
+            expression_table=expression_table,
+            db=db,
+            ascending=ascending)
+    elif mode == 'min_p_val':
+        res = pa.min_p_val(
+            expression_table=expression_table,
+            db=db,
+            ascending=ascending)
+    else:
+        res = pa.geometric(
+            expression_table=expression_table,
+            db=db,
+            ascending=ascending)
 
     #TODO: send as link instead of csv
     msg.attach(
-        filename='ipas_{}.csv'.format(db),
+        filename='ipas_{}_{}.csv'.format(db, mode),
         content_type='text/csv',
-        data=export_csv(geometric)
+        data=export_csv(res)
     )
 
     msg.body = "Thanks for using IPAS. " \

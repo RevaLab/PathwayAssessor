@@ -8,7 +8,6 @@
             The file should contain a matrix with genes in rows and samples in columns.
             Rows should be labeled with gene symbols.
         </div>
-        <span>{{ db }}</span>
         <div class="submitForm">
             <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
             <input type="email" id="email" v-model="email"/>
@@ -17,6 +16,15 @@
                 <option value="reactome">Reactome</option>
                 <option value="hmdb_smpdb">HMDB/SMPDB</option>
                 <option value="hallmark">Hallmark</option>
+            </select>
+            <select v-model="mode">
+                <option value="geometric">geometric</option>
+                <option value="harmonic">harmonic</option>
+                <option value="min_p_val">min_p_val</option>
+            </select>
+            <select v-model="sortBy">
+                <option value="asc">ascending</option>
+                <option value="desc">descending</option>
             </select>
             <button v-on:click="submitFile()">Submit</button>
         </div>
@@ -42,7 +50,9 @@ export default {
           email: '',
           sent: false,
           sentSuccessful: false,
-          db: 'kegg'
+          db: 'kegg',
+          sortBy: 'asc',
+          mode: 'harmonic',
       }
     },
     methods: {
@@ -54,6 +64,8 @@ export default {
             formData.append('file', this.file);
             formData.append('email', this.email);
             formData.append('db', this.db);
+            formData.append('sortBy', this.sortBy);
+            formData.append('mode', this.mode);
             axios.post( 'http://localhost:5000/uploader',
               formData,
               {
