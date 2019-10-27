@@ -80,7 +80,6 @@ def upload():
 @app.route('/process/<file_id>', methods=['GET'])
 def process(file_id):
     start_f = './tmp/to_send/{}.pkl'.format(file_id)
-    end_f = './tmp/sent/{}.pkl'.format(file_id)
     data = pickle.load(open(start_f, 'rb'))
 
     expression_table = data['expression_table']
@@ -112,7 +111,6 @@ def process(file_id):
             db=db,
             ascending=ascending)
 
-    #TODO: send as link instead of csv
     msg.attach(
         filename='ipas_{}_{}.csv'.format(db, mode),
         content_type='text/csv',
@@ -123,7 +121,8 @@ def process(file_id):
                "Please see your results attached as a TSV file."
     mail.send(msg)
 
-    os.rename(start_f, end_f)
+    # os.rename(start_f, end_f)
+    os.remove(start_f)
 
     return jsonify(success=True)
 
