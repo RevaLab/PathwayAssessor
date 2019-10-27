@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <HeaderLogo />
+    <BetaWarning />
     <Intro />
     <WebtoolExplanation />
     <Input />
@@ -9,6 +10,7 @@
 
 <script>
 import Input from './components/Input.vue'
+import BetaWarning from './components/BetaWarning.vue'
 import HeaderLogo from './components/HeaderLogo.vue'
 import Intro from './components/Intro.vue'
 import WebtoolExplanation from './components/WebtoolExplanation.vue'
@@ -16,6 +18,7 @@ import WebtoolExplanation from './components/WebtoolExplanation.vue'
 export default {
   name: 'app',
   components: {
+    BetaWarning,
     HeaderLogo,
     Input,
     Intro,
