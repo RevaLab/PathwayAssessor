@@ -134,9 +134,10 @@ def process(file_id):
         Pathway database: {}
         Mode: {}
         Direction: {}
+        Rank method: {}
         Please see your results attached as a TSV file.
         
-    """.format(db, mode, asc_str)
+    """.format(db, mode, asc_str, rank_method)
 
     mail.send(msg)
 
