@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <HeaderLogo />
+    <HeaderLogo onClick="window.location.reload();"/>
     <BetaWarning />
     <Intro />
     <WebtoolExplanation />
