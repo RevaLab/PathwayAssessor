@@ -10,15 +10,15 @@
         </div>
         <div class="submitForm">
             <div class="fieldset">
-                <label for="file">Expression table</label>
+                <label for="file">Expression table:</label>
                 <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
             </div>
             <div class="fieldset">
-                <label for="email">Email</label>
+                <label for="email">Email:</label>
                 <input type="email" id="email" v-model="email"/>
             </div>
             <div class="fieldset">
-                <label for="db">Pathway Database</label>
+                <label for="db">Pathway Database:</label>
                 <select id="db" v-model="db">
                     <option value="kegg">KEGG</option>
                     <option value="reactome">Reactome</option>
@@ -28,7 +28,7 @@
             </div>
             <div class="fieldset">
                 <label for="mode">
-                    Mode
+                    Mode:
                 </label>
                 <select id="mode" v-model="mode">
                     <option value="geometric">geometric</option>
@@ -37,14 +37,14 @@
                 </select>
             </div>
             <div class="fieldset">
-                <label for="direction">Direction</label>
+                <label for="direction">Direction:</label>
                 <select id="direction" v-model="sortBy">
                     <option value="asc">ascending</option>
                     <option value="desc">descending</option>
                 </select>
             </div>
             <div class="fieldset">
-                <label for="rank_method">Direction</label>
+                <label for="rank_method">Rank method:</label>
                 <select id="rank_method" v-model="rankMethod">
                     <option value="min">min</option>
                     <option value="max">max</option>
