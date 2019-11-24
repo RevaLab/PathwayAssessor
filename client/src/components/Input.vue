@@ -44,6 +44,15 @@
                 </select>
             </div>
             <div class="fieldset">
+                <label for="rank_method">Direction</label>
+                <select id="rank_method" v-model="rankMethod">
+                    <option value="min">min</option>
+                    <option value="max">max</option>
+                    <option value="average">average</option>
+                    <option value="first">first</option>
+                </select>
+            </div>
+            <div class="fieldset">
                 <button v-on:click="submitFile()">Submit</button>
             </div>
         </div>
@@ -72,6 +81,7 @@ export default {
           db: 'kegg',
           sortBy: 'asc',
           mode: 'harmonic',
+          rankMethod: 'max',
       }
     },
     methods: {
@@ -85,6 +95,7 @@ export default {
             formData.append('db', this.db);
             formData.append('sortBy', this.sortBy);
             formData.append('mode', this.mode);
+            formData.append('rankMethod', this.rankMethod);
             axios.post( 'http://localhost:5000/uploader',
               formData,
               {

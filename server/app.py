@@ -54,7 +54,7 @@ def upload():
         email = request.form['email']
         db = request.form['db']
         ascending = request.form['sortBy'] == 'asc'
-        # rank_method = request.form['sortBy']
+        rank_method = request.form['rankMethod']
         mode = request.form['mode']
 
         expression_table = pd.read_csv(f, sep='\t', header=0, index_col=0)
@@ -68,10 +68,10 @@ def upload():
             'email': email,
             'db': db,
             'ascending': ascending,
-            # 'rank_method': rank_method,
+            'rank_method': rank_method,
             'mode': mode,
         }
-        print(instance)
+
         pickle.dump(instance, open('./tmp/to_send/{}.pkl'.format(file_id), 'wb'))
 
         return jsonify({'file_id': file_id})
@@ -86,7 +86,7 @@ def process(file_id):
     email = data['email']
     db = data['db']
     ascending = data['ascending']
-    # rank_method = data['rank_method']
+    rank_method = data['rank_method']
     mode = data['mode']
 
     msg = Message(
@@ -99,17 +99,23 @@ def process(file_id):
         res = pa.harmonic(
             expression_table=expression_table,
             db=db,
-            ascending=ascending)
+            ascending=ascending,
+            rank_method=rank_method
+        )
     elif mode == 'min_p_val':
         res = pa.min_p_val(
             expression_table=expression_table,
             db=db,
-            ascending=ascending)
+            ascending=ascending,
+            rank_method=rank_method
+        )
     else:
         res = pa.geometric(
             expression_table=expression_table,
             db=db,
-            ascending=ascending)
+            ascending=ascending,
+            rank_method=rank_method
+        )
 
     msg.attach(
         filename='ipas_{}_{}.csv'.format(db, mode),
@@ -117,11 +123,23 @@ def process(file_id):
         data=export_csv(res)
     )
 
-    msg.body = "Thanks for using IPAS. " \
-               "Please see your results attached as a TSV file."
+    if ascending:
+        asc_str = 'ascending'
+    else:
+        asc_str = 'descending'
+
+    msg.body = """
+        Thanks for using IPAS. Your parameters were as follows:
+        
+        Pathway database: {}
+        Mode: {}
+        Direction: {}
+        Please see your results attached as a TSV file.
+        
+    """.format(db, mode, asc_str)
+
     mail.send(msg)
 
-    # os.rename(start_f, end_f)
     os.remove(start_f)
 
     return jsonify(success=True)

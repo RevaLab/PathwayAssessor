@@ -8,7 +8,7 @@ Jinja2==2.10
 MarkupSafe==1.1.1
 numpy==1.17.3
 pandas==0.25.2
-pathway-assessor==0.0.3
+pathway-assessor==0.0.4
 python-dateutil==2.8.0
 pytz==2019.3
 scipy==1.3.1
