@@ -39,11 +39,12 @@
             <div class="fieldset">
                 <label for="direction">Direction:</label>
                 <select id="direction" v-model="sortBy">
+                    <option value="difference">difference</option>
                     <option value="asc">ascending</option>
                     <option value="desc">descending</option>
                 </select>
             </div>
-            <div class="fieldset">
+            <div class="fieldset" v-if="sortBy != 'difference'">
                 <label for="rank_method">Rank method:</label>
                 <select id="rank_method" v-model="rankMethod">
                     <option value="min">min</option>
@@ -79,7 +80,7 @@ export default {
           sent: false,
           sentSuccessful: false,
           db: 'kegg',
-          sortBy: 'asc',
+          sortBy: 'difference',
           mode: 'harmonic',
           rankMethod: 'max',
       }
