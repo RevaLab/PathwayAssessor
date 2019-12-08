@@ -53,7 +53,8 @@ def upload():
         f = request.files['file']
         email = request.form['email']
         db = request.form['db']
-        ascending = request.form['sortBy'] == 'asc'
+        # ascending = request.form['sortBy'] == 'asc'
+        direction = request.form['sortBy']
         rank_method = request.form['rankMethod']
         mode = request.form['mode']
 
@@ -67,7 +68,7 @@ def upload():
             'expression_table': expression_table,
             'email': email,
             'db': db,
-            'ascending': ascending,
+            'direction': direction,
             'rank_method': rank_method,
             'mode': mode,
         }
@@ -85,9 +86,16 @@ def process(file_id):
     expression_table = data['expression_table']
     email = data['email']
     db = data['db']
-    ascending = data['ascending']
+    direction = data['direction']
     rank_method = data['rank_method']
     mode = data['mode']
+
+    kwargs = {
+        'expression_table': expression_table,
+        'db': db,
+        # 'mode': mode,
+        # 'rank_method': rank_method,
+    }
 
     msg = Message(
         'IPAS results',
@@ -95,38 +103,42 @@ def process(file_id):
         recipients=[email]
     )
 
-    if mode == 'harmonic':
-        res = pa.harmonic(
-            expression_table=expression_table,
-            db=db,
-            ascending=ascending,
-            rank_method=rank_method
-        )
-    elif mode == 'min_p_val':
-        res = pa.min_p_val(
-            expression_table=expression_table,
-            db=db,
-            ascending=ascending,
-            rank_method=rank_method
-        )
-    else:
-        res = pa.geometric(
-            expression_table=expression_table,
-            db=db,
-            ascending=ascending,
-            rank_method=rank_method
+    if direction == 'difference':
+        ascending = run_pa(mode, kwargs, ascending=True, rank_method='max')
+        descending = run_pa(mode, kwargs, ascending=False, rank_method='min')
+        res = ascending - descending
+
+        msg.attach(
+            filename='ipas_{}_{}_difference.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(res)
         )
 
-    msg.attach(
-        filename='ipas_{}_{}.csv'.format(db, mode),
-        content_type='text/csv',
-        data=export_csv(res)
-    )
+        msg.attach(
+            filename='ipas_{}_{}_ascending.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(ascending)
+        )
 
-    if ascending:
-        asc_str = 'ascending'
+        msg.attach(
+            filename='ipas_{}_{}_descending.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(descending)
+        )
+    elif direction == 'asc':
+        ascending = run_pa(mode, kwargs, ascending=True, rank_method='max')
+        msg.attach(
+            filename='ipas_{}_{}_ascending.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(ascending)
+        )
     else:
-        asc_str = 'descending'
+        descending = run_pa(mode, kwargs, ascending=False, rank_method='min')
+        msg.attach(
+            filename='ipas_{}_{}_descending.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(descending)
+        )
 
     msg.body = """
         Thanks for using IPAS. Your parameters were as follows:
@@ -134,16 +146,37 @@ def process(file_id):
         Pathway database: {}
         Mode: {}
         Direction: {}
-        Rank method: {}
         Please see your results attached as a TSV file.
         
-    """.format(db, mode, asc_str, rank_method)
+    """.format(db, mode, direction)
 
     mail.send(msg)
 
     os.remove(start_f)
 
     return jsonify(success=True)
+
+
+def run_pa(mode, kwargs, ascending, rank_method):
+    if mode == 'harmonic':
+        res = pa.harmonic(
+            **kwargs,
+            ascending=ascending,
+            rank_method=rank_method,
+        )
+    elif mode == 'min_p_val':
+        res = pa.min_p_val(
+            **kwargs,
+            ascending=ascending,
+            rank_method=rank_method,
+        )
+    else:
+        res = pa.geometric(
+            **kwargs,
+            ascending=ascending,
+            rank_method=rank_method,
+        )
+    return res
 
 
 if __name__ == '__main__':
