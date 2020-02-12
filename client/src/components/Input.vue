@@ -97,6 +97,7 @@ export default {
             formData.append('sortBy', this.sortBy);
             formData.append('mode', this.mode);
             formData.append('rankMethod', this.rankMethod);
+            this.sent = true;
             axios.post( 'http://localhost:5000/uploader',
               formData,
               {
@@ -105,7 +106,7 @@ export default {
                 }
               }
             ).then((res) => {
-                this.sent = true;
+                // this.sent = true;
                 return res.data['file_id'];
             }).then((fileID) => {
                 axios.get(`http://localhost:5000/process/${fileID}`)
