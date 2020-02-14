@@ -103,42 +103,42 @@ def process(file_id):
         recipients=[email]
     )
 
-    # if direction == 'difference':
-    #     ascending = run_pa(mode, kwargs, ascending=True, rank_method='max')
-    #     descending = run_pa(mode, kwargs, ascending=False, rank_method='min')
-    #     res = ascending - descending
-    #     # print(res)
-    #     msg.attach(
-    #         filename='ipas_{}_{}_difference.csv'.format(db, mode),
-    #         content_type='text/csv',
-    #         data=export_csv(res)
-    #     )
-    #
-    #     msg.attach(
-    #         filename='ipas_{}_{}_ascending.csv'.format(db, mode),
-    #         content_type='text/csv',
-    #         data=export_csv(ascending)
-    #     )
-    #
-    #     msg.attach(
-    #         filename='ipas_{}_{}_descending.csv'.format(db, mode),
-    #         content_type='text/csv',
-    #         data=export_csv(descending)
-    #     )
-    # elif direction == 'asc':
-    #     ascending = run_pa(mode, kwargs, ascending=True, rank_method=rank_method)
-    #     msg.attach(
-    #         filename='ipas_{}_{}_ascending.csv'.format(db, mode),
-    #         content_type='text/csv',
-    #         data=export_csv(ascending)
-    #     )
-    # else:
-    #     descending = run_pa(mode, kwargs, ascending=False, rank_method=rank_method)
-    #     msg.attach(
-    #         filename='ipas_{}_{}_descending.csv'.format(db, mode),
-    #         content_type='text/csv',
-    #         data=export_csv(descending)
-    #     )
+    if direction == 'difference':
+        ascending = run_pa(mode, kwargs, ascending=True, rank_method='max')
+        descending = run_pa(mode, kwargs, ascending=False, rank_method='min')
+        res = ascending - descending
+        # print(res)
+        msg.attach(
+            filename='ipas_{}_{}_difference.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(res)
+        )
+
+        msg.attach(
+            filename='ipas_{}_{}_ascending.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(ascending)
+        )
+
+        msg.attach(
+            filename='ipas_{}_{}_descending.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(descending)
+        )
+    elif direction == 'asc':
+        ascending = run_pa(mode, kwargs, ascending=True, rank_method=rank_method)
+        msg.attach(
+            filename='ipas_{}_{}_ascending.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(ascending)
+        )
+    else:
+        descending = run_pa(mode, kwargs, ascending=False, rank_method=rank_method)
+        msg.attach(
+            filename='ipas_{}_{}_descending.csv'.format(db, mode),
+            content_type='text/csv',
+            data=export_csv(descending)
+        )
 
     msg.body = """
         Thanks for using IPAS. Your parameters were as follows:
