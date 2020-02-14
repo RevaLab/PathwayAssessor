@@ -97,7 +97,7 @@ export default {
             formData.append('sortBy', this.sortBy);
             formData.append('mode', this.mode);
             formData.append('rankMethod', this.rankMethod);
-            this.sent = true;
+            // this.sent = true;
             axios.post( 'http://localhost:5000/uploader',
               formData,
               {
