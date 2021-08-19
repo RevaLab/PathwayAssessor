@@ -1,5 +1,11 @@
 # pathway-assessor
 
+Source code for the PathwayAssessor web application. 
+
+Visit the application at: https://calina01.u.hpc.mssm.edu/pathway_assessor/
+
+![Screenshot of web app](page-screenshot.png)
+
 ## Project setup
 ```
 yarn install

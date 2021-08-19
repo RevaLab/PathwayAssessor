@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HeaderLogo onClick="window.location.reload();"/>
+    <BetaWarning />
+    <Intro />
+    <WebtoolExplanation />
+    <Input />
+    <references />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BetaWarning from './components/BetaWarning.vue'
+import HeaderLogo from './components/HeaderLogo.vue'
+import Input from './components/Input.vue'
+import Intro from './components/Intro.vue'
+import References from './components/References.vue'
+import WebtoolExplanation from './components/WebtoolExplanation.vue'
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    BetaWarning,
+    HeaderLogo,
+    Input,
+    Intro,
+    References,
+    WebtoolExplanation,
+  },
 }
 </script>
-
+,
+    References
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 </style>

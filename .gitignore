@@ -21,3 +21,9 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+dist/
+__init__.py
+node_modules/
+scripts/
+index.wsgi
+.htaccess
